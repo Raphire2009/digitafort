@@ -30,22 +30,50 @@ which makes it incredibly easy to get started with databases in Python.
 #name = int(input("Your Age :"))
 #print(name)
 
-name = input("YOur Name : ")
-age = int(input("Your age : "))
-gender = input("Your Gender :")
+#import tkinter as tk 
+
+#root = tk.Tk()
+#root.title(" My app")
+
+
+#root.mainloop()
 
 
 
-
-#  check the person gender 
-if gender == "male":
-    boy = 'good day sir'
-    print(boy)
-elif gender == "female":
-    print(" good day ma")
-else:
-    print('invalid gender')
+#string
+#int
+#float
+#bool
 
 
+#kkkkkkkkkkk
+"""
+kkkkkkkkkkk
+"""
 
-print(gender)
+#create 2 a var 
+# add the value 
+# substract them 
+# **
+# * 
+
+
+a = 8 # attend classes
+b = 3 # read your books
+c = 6 # don't attend 
+d = 4
+
+#passing  =  (a > 3) or (c < d)
+#print(passing)
+
+
+#name = 40 
+#name -= name 
+
+
+
+val1 = 6
+val2 = 2 
+
+
+print(f"Bitwise AND ({val1} & {val2}): {val1 & val2}")
