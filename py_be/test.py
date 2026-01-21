@@ -90,11 +90,9 @@ c,d = a,b
 #       0       1         2
 
 
+#
 
-count = 0 
-while count < 5 :
-    print(f"{count}")
-    count += 1
+
 
 
 
