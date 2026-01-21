@@ -58,10 +58,10 @@ kkkkkkkkkkk
 # * 
 
 
-a = 8 # attend classes
-b = 3 # read your books
-c = 6 # don't attend 
-d = 4
+#a = 8 # attend classes
+#b = 3 # read your books
+#c = 6 # don't attend 
+#d = 4
 
 #passing  =  (a > 3) or (c < d)
 #print(passing)
@@ -71,9 +71,30 @@ d = 4
 #name -= name 
 
 
+#if you came to class -> if you came with your system   -> learn 
+#else ->dont learn 
 
-val1 = 6
-val2 = 2 
+a = 2
+b = 3
+c,d = a,b 
 
 
-print(f"Bitwise AND ({val1} & {val2}): {val1 & val2}")
+
+
+#position , apple = en(0,apple)
+
+#0, apple
+#en(0,apple ) = [
+#  0 : apple
+# ]
+#       0       1         2
+
+
+
+count = 0 
+while count < 5 :
+    print(f"{count}")
+    count += 1
+
+
+
