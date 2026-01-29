@@ -1,13 +1,9 @@
-from typing import List,Dict
-from .models import TodoItem
+from typing import List,Dict,Optional
+from .models import TodoItem , CreateItem
 
 
 
-[]
-good:Dict[int, str]= {
-    1:  "ggo",
-    2: "hhh"
-}
+
 
 
 fake_db:Dict[int, TodoItem] = {
@@ -22,4 +18,30 @@ next_id = 3
 
 
 def get_all_todo()->List[TodoItem]:
-    return List()
+    return List(fake_db.values())
+
+
+def get_todo_by_id(id:int)->Optional[TodoItem]:
+    return fake_db.get(id)
+
+def create_todo(todo_data:CreateItem)->TodoItem:
+    global next_id
+    new_todo = TodoItem(id=next_id, **todo_data.dict())
+    fake_db[next_id] = new_todo
+    next_id += 1
+    return new_todo
+                 
+def update_todo(todo_id :int, todo_data:CreateItem)->Optional[TodoItem]:
+    if todo_id in fake_db :
+        todo_item = fake_db[todo_id] 
+        todo_item.title = todo_data.title
+        todo_item.description = todo_data.description
+        return todo_item
+    return None
+
+def delete_todo(todo_id: int)->bool:
+    if todo_id in fake_db:
+        del fake_db[todo_id]
+        return True
+    return False
+

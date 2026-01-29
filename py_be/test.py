@@ -96,3 +96,56 @@ c,d = a,b
 
 
 
+          
+fruits = ["apple","orange"]
+fruits.append("mango")
+fruits.append(9.333)
+fruits[2] = "banana"
+fruits.remove(9.333)
+fruits.append("apple")
+
+
+
+#print(f"this are the item: {item}", type(item))
+
+#                0,1,2, 3
+mutable_tuple = (1,2,3, [4,5,6])
+mutable_tuple[3][0] = 89
+
+number =  (1,2,3,3,4,5,6)
+first , *second, last  = number 
+#print(first, *second, last)
+
+
+
+def get_more_value():
+    return "alice", 30, "example@gmail.com"
+
+
+name, age , mail = get_more_value()
+#print(name,age,mail)
+
+
+
+location  = {
+    (40.7128, -74.0060): "New York City",
+    (34.0522, -118.2437): "Los Angeles"
+}
+
+import sys
+
+
+num_l = [1,2,3,4,5]
+#print("List size in bytes :",sys.getsizeof(num_l))
+num_t = (1,2,3,4,5)
+#print("Turple Size i Bytes: ", sys.getsizeof(num_t))
+
+from collections import namedtuple
+
+Point = namedtuple('Point',['x','y','z'])
+
+
+anything = { "name": "victor", "age" : 92,  "location":"UK" }
+
+print(anything['name'])
+

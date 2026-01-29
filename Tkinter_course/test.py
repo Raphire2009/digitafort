@@ -1,32 +1,45 @@
 
 import tkinter as tk
 
+
 root = tk.Tk()
+
 
 root.title(" Your App")
 
+##menu = tk.Menu(root)
 
-label = tk.Label(root, text="Hello, Tkinter!")
-#def on_button_click():
-#    print("button click")
+root.geometry("400x300")
 
-#button = tk.Button(root, text="Click me", command=on_button_click)
-#button.pack()
-#entry = tk.Entry(root, width=30)
-#entry.pack()
+#label = tk.Label(root, text="Hello ")
+#label.pack()
 
-#scale = tk.Scale(root, from_=10, to=100, orient=tk.HORIZONTAL)
-#scale.pack()
+"""
+def on_click_button():
+    print('Button is working ')
+
+button = tk.Button(root, text="click me", command=on_click_button)
+button.pack()
+
+entry = tk.Entry(root, width=30)
+entry.pack()
+
+text = tk.Text(root, height=50, width=30)
+text.pack()
+"""
+
+frame = tk.Frame(root, borderwidth=4, relief="groove")
+frame.pack(padx=30, pady=50)
+frame_label = tk.Label(frame, text="victor  kdddddddddddddddddddddddddddddkdkdddddddddddddddddddddd")
+frame_label.pack()
 
 
-scrollbar = tk.Scrollbar(root)
-scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-listbox = tk.Listbox(root,yscrollcommand=scrollbar.set)
-for i in range(50):
-    listbox.insert(tk.END, f"item{i}")
-listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-scrollbar.config(command=listbox.yview)
+
+
+
 root.mainloop()
+
+
 
 
 
