@@ -118,34 +118,60 @@ first , *second, last  = number
 
 
 
-def get_more_value():
-    return "alice", 30, "example@gmail.com"
+#def get_more_value():
+#    return "alice", 30, "example@gmail.com"
 
 
-name, age , mail = get_more_value()
+#name, age , mail = get_more_value()
 #print(name,age,mail)
 
 
 
-location  = {
-    (40.7128, -74.0060): "New York City",
-    (34.0522, -118.2437): "Los Angeles"
-}
+#location  = {
+#    (40.7128, -74.0060): "New York City",
+#    (34.0522, -118.2437): "Los Angeles"
+#}
 
-import sys
+#import sys
 
 
-num_l = [1,2,3,4,5]
+#num_l = [1,2,3,4,5]
 #print("List size in bytes :",sys.getsizeof(num_l))
-num_t = (1,2,3,4,5)
+#num_t = (1,2,3,4,5)
 #print("Turple Size i Bytes: ", sys.getsizeof(num_t))
 
-from collections import namedtuple
+#from collections import namedtuple
 
-Point = namedtuple('Point',['x','y','z'])
+#Point = namedtuple('Point',['x','y','z'])
 
 
-anything = { "name": "victor", "age" : 92,  "location":"UK" }
+#anything = { "name": "victor", "age" : 92,  "location":"UK" }
 
-print(anything['name'])
+#print(anything['name'])
+
+
+
+
+user_profile = {
+    "name" : "salah",
+    "email" : "example@gamil.com",
+    "is_active": True,
+    "roles" : ["admin", "users"]
+}
+#print(user_profile["email"])
+user_profile["is_active"] = False
+
+user_profile.update({"school": "UNN"})
+print(user_profile)
+
+#dict_funct = dict(name="salah", age=90)
+#print(dict_funct)
+
+
+
+
+
+
+
+
 
