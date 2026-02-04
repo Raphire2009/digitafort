@@ -162,13 +162,48 @@ user_profile = {
 user_profile["is_active"] = False
 
 user_profile.update({"school": "UNN"})
-print(user_profile)
+#print(f"Before pop :",user_profile)
+user_profile.popitem()
+user_profile.clear()
+#print(user_profile)
 
-#dict_funct = dict(name="salah", age=90)
-#print(dict_funct)
+
+#dictionary
+"""
+student_grade = {
+    "Bio" : 90,
+    "MTH" : 76,
+    "BCH" : 67
+}
+
+for subject, grade  in student_grade.items() :
+    print(f"Student  Subjects and Grade: {subject},{grade}")
 
 
+company_data = {
+    "employee" :{
+        "empl001" : { "name" : "alice", "age": 90},
+        "emploo2" : { "name" : "salah", "age": 60}
+    },
 
+    "location" : ['lagos', "Nigeria"]
+}
+"""
+
+# set eg
+lan_tag = ["python", "php", "python", "rust","java", "c"]
+
+unique_lan = set(lan_tag)
+
+#print(f"Lan List :", lan_tag)
+#print(f"The Set  :", unique_lan)
+
+set_a = {1,2,3,4}
+set_b = {3,4,5,6}
+
+inter_set = set_b.difference(set_a)
+#print(f"the union of {set_a} and {set_b} is {uni_set}")
+print(inter_set)
 
 
 
