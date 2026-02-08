@@ -27,6 +27,9 @@ asyncio.run(main())
 """
 
 
+
+
+"""
 import threading
 import time 
 
@@ -56,3 +59,35 @@ threading_one.join()
 threading_two.join()
 
 print(" all thread complete")
+"""
+
+
+
+
+
+
+class Animal:
+    def __init__(self):
+        self.limb = 4
+        self.eye = 2
+        self.stomach = 1
+        self.ear = 2
+    def make_sound(self):
+        pass
+
+class Dog(Animal):
+    def make_sound(self):
+        print("Woof")
+class Cat(Animal):
+    def make_sound(self):
+        print("Meow")
+def animal_sound(animal):
+    animal.make_sound()
+
+dog = Dog()
+cat = Cat()
+
+
+
+animal_sound(dog)
+animal_sound(cat)

@@ -1,15 +1,5 @@
 
-import tkinter as tk
 
-
-root = tk.Tk()
-
-
-root.title(" Your App")
-
-##menu = tk.Menu(root)
-
-root.geometry("400x300")
 
 #label = tk.Label(root, text="Hello ")
 #label.pack()
@@ -47,14 +37,44 @@ text.pack()
 #list.insert(tk.END, "Item 2")
 #list.pack()
 
+import tkinter as tk
+from  tkinter import messagebox
+from tkinter import filedialog
+root = tk.Tk()
+
+root.title(" Your App")
+root.geometry("400x300")
+root.withdraw
+
+def open_file():
+    filePath = filedialog.askopenfilename(
+        title="open a file ", 
+        filetypes=(("test file", "*.md"), ("all file", "*.")))
+    if filePath:
+        print(f"selected file Path:{filePath}")
+
+open_file()
+root.destroy()
 
 
 
-root.mainloop()
 
 
+class Myapp:
+    
+    def __init__(self, master):
+        self.master = master 
+        master.title("My App")
+        
+        self.label = tk.Label(master, text="Hello World")
+        self.label.pack(pady=10)
 
+        self.greet_button = tk.Button(master, text="Greet", command=self.greet)
+        self.greet_button.pack()
 
-
-
+        self.close_button = tk.Button(master, text="Close", command=master.quit)
+        self.close_button.pack()
+    
+    def greet(self):
+        self.label.config(text="Greeting")
 
