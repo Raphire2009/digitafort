@@ -191,22 +191,65 @@ company_data = {
 """
 
 # set eg
-lan_tag = ["python", "php", "python", "rust","java", "c"]
+#lan_tag = ["python", "php", "python", "rust","java", "c"]
 
-unique_lan = set(lan_tag)
+#unique_lan = set(lan_tag)
 
 #print(f"Lan List :", lan_tag)
 #print(f"The Set  :", unique_lan)
 
-set_a = {1,2,3,4}
-set_b = {3,4,5,6}
+#set_a = {1,2,3,4}
+#set_b = {3,4,5,6}
 
-inter_set = set_b.difference(set_a)
+#inter_set = set_b.difference(set_a)
 #print(f"the union of {set_a} and {set_b} is {uni_set}")
-print(inter_set)
 
 
 
 
 
 
+
+
+
+
+
+
+good_day = "Good Morning"
+
+print(good_day)
+
+
+
+
+#greeting 
+def good_night(): #good nigth 
+    good = "Good evening"
+    print(good)
+
+
+good_night()
+
+
+def welcome_message():
+    print("Welcome to functions")
+
+
+welcome_message()
+
+
+def add(a,b=2)->int:
+    return  a + b # ..............
+    print("done")
+
+
+num = add(2)
+print(num)
+
+
+
+def greet_user(name):
+    message = "Good Morning"
+    print(f"{message}, {name}")
+
+greet_user("victor")
