@@ -17,6 +17,13 @@ The course is divided into several modules, each focusing on a key aspect of sys
     *   **Lesson 4:** Global Access Control with Middleware
     *   **Practical:** Build and Secure a Basic Django Authorization App
 
+*   **Module 2: Architectural Choices & Patterns**
+    *   **Lesson 1:** Monolithic Architecture Deep Dive
+    *   **Lesson 2:** Microservices Architecture Deep Dive
+    *   **Lesson 3:** Exploring Other Architectural Styles (Brief Overview)
+    *   **Lesson 4:** Making Architectural Decisions
+    *   **Practical:** Architectural Design Case Study (Non-Coding)
+
 ---
 
 ## How to Use This Course
