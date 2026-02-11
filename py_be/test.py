@@ -214,15 +214,18 @@ company_data = {
 
 
 
-
+"""
 good_day = "Good Morning"
 
 print(good_day)
+"""
+
 
 
 
 
 #greeting 
+"""
 def good_night(): #good nigth 
     good = "Good evening"
     print(good)
@@ -253,3 +256,67 @@ def greet_user(name):
     print(f"{message}, {name}")
 
 greet_user("victor")
+"""
+
+
+"""
+
+def add(a,b):
+    c = a + b
+    print(c)
+
+add(3,4)
+
+
+
+
+def describe_pet(ani_type, pet_name):
+
+    print({ani_type},{pet_name})
+
+describe_pet(pet_name="dog", ani_type="mammals")
+
+
+
+
+
+def numbers(*nums):
+    print(nums)
+
+
+numbers(1,7,66,6)
+
+numbers(1,2,3,4)
+
+
+"""
+
+
+"""
+print(" Hello , Python!")
+"""
+
+
+def add(a,b):
+    return a + b 
+    
+
+
+add_lambda = lambda a,b:a + b
+
+
+is_even = lambda x : x % 2 == 0 
+
+
+print(add(4,4))
+print(add_lambda(4,2))
+
+print(is_even(8))
+
+
+
+students = [("alice", 35),("bob", 23), ("fred", 25)]
+
+sorted_by_grade =sorted(students, key=lambda student: student[1])
+
+print(sorted_by_grade)
