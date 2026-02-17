@@ -297,6 +297,8 @@ print(" Hello , Python!")
 """
 
 
+
+"""
 def add(a,b):
     return a + b 
     
@@ -320,3 +322,76 @@ students = [("alice", 35),("bob", 23), ("fred", 25)]
 sorted_by_grade =sorted(students, key=lambda student: student[1])
 
 print(sorted_by_grade)
+"""
+
+
+
+
+girl = "fisa"
+num   = 97
+amount = 5.00
+boy = True
+#print(type(girl))
+#print var
+
+
+""" 
+fhfhffhhfhfhf
+fffhfhfhfhhfhf
+fhfhfhfhfhfhsss
+"""
+
+
+
+
+name = "victor"
+
+greet = "good morning"
+
+
+def greeting(name):
+    print(f"Hello:",name)
+
+
+#greeting("dami")
+
+
+
+#name = input("Your Name:")
+#print(f"hi:", name)
+
+#numb = int(input("add phone number :"))
+#print(numb)
+
+"""
+first_name = "chukwuemeka"
+last_name = "victor"
+print({first_name + last_name})
+"""
+
+
+
+math_expr =lambda a,b: a + b 
+print(math_expr(5,7))
+
+
+
+def add(a,b):
+    return a +b 
+
+
+
+#numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#even_num = filter(lambda  number)
+#print(f"Even : {even_num}")
+
+
+#      key    arg    
+age = lambda age:"adult" if age >= 18 else "Minor"
+#print("Your Age :", age(21))
+
+
+fruits = ["apple", "orange","banana"]
+
+for fruit in fruits:
+    print(f"I love : {fruits}")
