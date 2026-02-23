@@ -65,7 +65,7 @@ print(" all thread complete")
 
 
 
-
+"""
 class Animal:
     def __init__(self):
         self.limb = 4
@@ -91,3 +91,23 @@ cat = Cat()
 
 animal_sound(dog)
 animal_sound(cat)
+"""
+
+
+
+
+
+d = 17
+
+def add(a:int, b:int)->float :
+    return float( a+b)
+
+
+
+def sub(n):
+    if n == 0:          
+        return 0
+    sub(n-1) 
+    return n 
+
+print(sub(3))

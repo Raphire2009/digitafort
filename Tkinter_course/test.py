@@ -1,6 +1,5 @@
 
 
-
 #label = tk.Label(root, text="Hello ")
 #label.pack()
 
@@ -37,6 +36,8 @@ text.pack()
 #list.insert(tk.END, "Item 2")
 #list.pack()
 
+
+"""
 import tkinter as tk
 from  tkinter import messagebox
 from tkinter import filedialog
@@ -77,4 +78,71 @@ class Myapp:
     
     def greet(self):
         self.label.config(text="Greeting")
+
+"""
+
+
+import tkinter as tk 
+from tkinter import messagebox
+import sqlite3
+
+
+# the page framework
+root = tk.TK()
+root.title("temperature converter ")
+root.geometry("300*150")
+
+
+
+
+#1. c
+# 2. f
+
+def convert_temperature():
+    c_text  = c_entry.get()
+    f_text = f_entry.get()
+
+    try:
+        if c_text:
+            c_value = float(c_text)
+            f_result = (c_value * 9/5) + 32
+
+            f_entry.delete(0,tk.END)
+            f_entry.insert(0, f"{f_result:.2f}")
+        elif f_text:
+            f_value = float(f_text)
+            c_result = (f_value -32) * 5/9
+
+            c_entry.delete(0,tk.END)
+            c_entry.insert(0, f"{c_result:.2f}")
+        else:
+            messagebox.showwarning()
+
+#adding the widgets
+c_label  = tk.Label(root,text="celsuis:")
+c_entry = tk.Entry(root,width=20)
+
+f_label = tk.Label(root,text="F :")
+f_entry = tk.Entry(root, width=20)
+
+
+c_temp_b = tk.Button(root, text="Convert", command=convert_temperature)
+clear_temp_b = tk.Button(root, text="Clear", command=clear_temp)
+
+
+
+#arrange the widgets
+c_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+c_entry.grid(row=0, column=1, padx=10, pady=5)
+
+
+f_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+f_entry.grid(row=0, column=1, padx=10, pady=5)
+
+c_temp_b.grid(row=2, column=0, padx=2, pady=10)
+clear_temp_b.grid(row=3, columnspan=0, pady=5)
+
+
+root.mainloop()
+
 

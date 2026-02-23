@@ -371,13 +371,13 @@ print({first_name + last_name})
 
 
 
-math_expr =lambda a,b: a + b 
-print(math_expr(5,7))
+#math_expr =lambda a,b: a + b 
+#print(math_expr(5,7))
 
 
 
-def add(a,b):
-    return a +b 
+#def add(a,b):
+#    return a +b 
 
 
 
@@ -387,11 +387,53 @@ def add(a,b):
 
 
 #      key    arg    
-age = lambda age:"adult" if age >= 18 else "Minor"
+#age = lambda age:"adult" if age >= 18 else "Minor"
 #print("Your Age :", age(21))
 
 
-fruits = ["apple", "orange","banana"]
+#fruits = ["apple", "orange","banana"]
 
-for fruit in fruits:
-    print(f"I love : {fruits}")
+#for fruit in fruits:
+#    print(f"I love : {fruits}")
+
+
+
+
+
+"""
+def guess_g(secret_num):
+    guess = 10
+    while guess != secret_num:
+        print(f"{secret_num} don't match the")
+        return 
+    print(f"You Won {guess} matches the {secret_num}")
+
+
+
+num = int(input("Your Game Number:"))
+#print(num)
+guess_g(num)
+
+"""
+"""
+for i in range(5):
+    print(i)
+print()
+"""
+
+
+
+
+
+
+
+try:
+    with open('victor.txt', 'w') as victor:
+        victor.write("jfjfjfj kfkkf lflf. \n")
+        victor.write("nothing else. \n")
+        victor.write("alalalalala. \n")
+    print("it worked ")
+
+except IOError as e:
+    print(f"{e} occurred")
+
