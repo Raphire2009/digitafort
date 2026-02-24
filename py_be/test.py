@@ -426,7 +426,7 @@ print()
 
 
 
-
+"""
 try:
     with open('victor.txt', 'w') as victor:
         victor.write("jfjfjfj kfkkf lflf. \n")
@@ -436,4 +436,11 @@ try:
 
 except IOError as e:
     print(f"{e} occurred")
+
+"""
+
+
+my_new_file = open("victor.txt", 'w')
+my_new_file.write("hhhhhfkkf . \n")
+
 

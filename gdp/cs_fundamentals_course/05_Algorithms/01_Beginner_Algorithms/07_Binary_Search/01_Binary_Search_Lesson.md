@@ -15,6 +15,29 @@ Binary Search is a more efficient search algorithm than Linear Search. It works 
 5.  **Repeat:** Repeat steps 1-4 with the new half-sized search area.
 6.  **End of list:** If the search space becomes empty without finding the target, return -1.
 
+## Visualization
+
+Searching for `20` in `[1, 5, 8, 12, 15, 20, 25, 30]`:
+
+```text
+Step 1: [1, 5, 8, 12, 15, 20, 25, 30]  (low=0, high=7)
+                  ^ mid=3 (val=12)
+        Target 20 > 12, search right half.
+
+Step 2: [15, 20, 25, 30] (low=4, high=7)
+              ^ mid=5 (val=20)
+        Target 20 == 20, Match Found! Return index 5.
+```
+
+## Why is it Logarithmic?
+Every step in Binary Search reduces the search area by half. If you have $n$ elements, after one step you have $n/2$, then $n/4$, then $n/8$, and so on. The number of steps required to reach 1 is the power to which 2 must be raised to get $n$. This is the definition of $\log_2 n$.
+
+- For **1,000** elements: ~10 steps
+- For **1,000,000** elements: ~20 steps
+- For **1,000,000,000** elements: ~30 steps
+
+This is incredibly powerful!
+
 ## Pseudocode
 
 ```
@@ -72,6 +95,51 @@ if result != -1:
 else:
     print("Element not found in the list.")
 # Output: Element found at index: 5
+```
+
+## Complexity Analysis
+
+Binary Search is significantly faster than Linear Search for large datasets.
+
+### Time Complexity
+- **Best Case: $O(1)$** - The target element is found at the middle of the array on the very first try.
+- **Average Case: $O(\log n)$** - On average, the search space is halved $\log_2 n$ times.
+- **Worst Case: $O(\log n)$** - The target element is at the far ends of the array or not present at all.
+
+### Space Complexity
+- **Iterative Approach: $O(1)$** - Only a few variables (`low`, `high`, `mid`) are used regardless of the input size.
+- **Recursive Approach: $O(\log n)$** - Due to the call stack depth in recursion.
+
+## Binary Search vs. Linear Search
+
+| Feature | Linear Search | Binary Search |
+| :--- | :--- | :--- |
+| **Prerequisite** | None (can be unsorted) | Must be **Sorted** |
+| **Worst-case Time** | $O(n)$ | $O(\log n)$ |
+| **Best-case Time** | $O(1)$ | $O(1)$ |
+| **Approach** | Sequential | Divide and Conquer |
+| **Efficiency** | Better for small lists | Better for large lists |
+
+## Recursive Implementation
+
+While the iterative version is often preferred for its space efficiency, the recursive version is a classic example of the "Divide and Conquer" strategy.
+
+```python
+def binary_search_recursive(arr, target, low, high):
+    if low > high:
+        return -1
+    
+    mid = (low + high) // 2
+    
+    if arr[mid] == target:
+        return mid
+    elif arr[mid] < target:
+        return binary_search_recursive(arr, target, mid + 1, high)
+    else:
+        return binary_search_recursive(arr, target, low, mid - 1)
+
+# Example usage:
+# result = binary_search_recursive(my_list, target, 0, len(my_list) - 1)
 ```
 
 ## Exercise
