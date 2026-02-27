@@ -92,18 +92,23 @@ cat = Cat()
 animal_sound(dog)
 animal_sound(cat)
 """
+"""
+def mega_2():
+    return 4.4
+
+def omega():
+    return mega_2()
+"""
 
 
-
-
-
-d = 17
-
+# say we should use an int as para 
+#it returns a float 
+"""
 def add(a:int, b:int)->float :
-    return float( a+b)
-
-
-
+    c = omega()
+    return float(c)
+"""
+"""
 def sub(n):
     if n == 0:          
         return 0
@@ -111,3 +116,52 @@ def sub(n):
     return n 
 
 print(sub(3))
+map()
+"""
+
+
+def greet():
+    return "hello"
+
+
+good = greet()
+
+def greetings(good):
+    name = "kkkkk"
+    return f"{name} + {good}"
+
+
+def call_greet():
+    return greet()
+
+
+
+
+def victor(a,b):
+    return a + b 
+victor(2,3)
+
+
+lambda a,b: a + b 
+
+
+
+num = "victor"
+for i in num:
+    print(i)
+
+
+#sum = [2,3,4,5,55,66,6]
+
+#lambda sum : sum[0+1] 
+
+
+map(lambda x:x+x, [1,2,3])
+
+
+
+
+
+a = 10
+b = 2
+add = a + b 
