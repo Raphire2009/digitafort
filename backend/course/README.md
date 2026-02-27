@@ -15,7 +15,9 @@ The course is divided into several modules, each focusing on a key aspect of sys
     *   **Lesson 2:** Web Fundamentals & Django Core
     *   **Lesson 3:** Authentication & Authorization in Depth
     *   **Lesson 4:** Global Access Control with Middleware
-    *   **Practical:** Build and Secure a Basic Django Authorization App
+    *   **Lesson 5:** JWT Authentication (JSON Web Tokens)
+    *   **Practical 1:** Build and Secure a Basic Django Authorization App
+    *   **Practical 2:** Implementing JWT Auth with Django REST Framework
 
 *   **Module 2: Architectural Choices & Patterns**
     *   **Lesson 1:** Monolithic Architecture Deep Dive
