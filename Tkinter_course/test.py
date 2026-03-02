@@ -82,15 +82,15 @@ class Myapp:
 """
 
 
-import tkinter as tk 
+import tkinter as tk
 from tkinter import messagebox
 import sqlite3
 
 
 # the page framework
-root = tk.TK()
+root = tk.Tk()
 root.title("temperature converter ")
-root.geometry("300*150")
+root.geometry("300x150")
 
 
 
@@ -117,6 +117,19 @@ def convert_temperature():
             c_entry.insert(0, f"{c_result:.2f}")
         else:
             messagebox.showwarning()
+    except ValueError:
+        messagebox.showerror("Input Error", "Invalid temp")
+
+
+
+#
+def clear_temp():
+    c_entry.delete(0, tk.END)
+    f_entry.delete(0, tk.END)
+
+
+
+
 
 #adding the widgets
 c_label  = tk.Label(root,text="celsuis:")
@@ -137,10 +150,10 @@ c_entry.grid(row=0, column=1, padx=10, pady=5)
 
 
 f_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
-f_entry.grid(row=0, column=1, padx=10, pady=5)
+f_entry.grid(row=1, column=1, padx=10, pady=5)
 
 c_temp_b.grid(row=2, column=0, padx=2, pady=10)
-clear_temp_b.grid(row=3, columnspan=0, pady=5)
+clear_temp_b.grid(row=3, columnspan=1, pady=5)
 
 
 root.mainloop()
