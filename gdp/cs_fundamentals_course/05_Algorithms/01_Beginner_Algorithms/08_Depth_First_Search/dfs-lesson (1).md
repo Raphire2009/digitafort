@@ -10,6 +10,12 @@ Depth-First Search traverses a graph by going as far as possible down one branch
 
 DFS can be implemented with **recursion** (using the call stack implicitly) or an **explicit stack** data structure. Both approaches produce identical behavior.
 
+Two core ideas make DFS work:
+- **Go deep first**: At each step, pick one unvisited neighbor and keep moving forward.
+- **Never repeat work**: Keep track of visited nodes so you do not loop forever in cyclic graphs.
+
+In short, DFS is a "depth-first + memory" strategy.
+
 ---
 
 ## How it Works
@@ -19,6 +25,17 @@ DFS can be implemented with **recursion** (using the call stack implicitly) or a
 3. **Recurse** — Call DFS on the first unvisited neighbor — go as deep as possible.
 4. **Backtrack** — When all neighbors are visited (or none exist), return to the previous node.
 5. **Terminate** — Repeat until all reachable nodes have been visited.
+
+Important note: DFS does **not** guarantee the shortest path. It guarantees a systematic traversal of all reachable nodes.
+
+### Student Mental Model
+
+If DFS were a person exploring tunnels, the behavior would be:
+1. Pick one tunnel and keep walking until you cannot continue.
+2. Step backward to the last junction with an untried tunnel.
+3. Repeat until every reachable tunnel has been tried.
+
+This is exactly why recursion works well: each recursive call represents "go one level deeper."
 
 ---
 
@@ -71,6 +88,20 @@ dfs(graph, 'A')
 # Output: A B D E F C
 ```
 
+Why this code is written this way:
+- `visited=None` then `visited = set()` prevents sharing one set across unrelated DFS runs.
+- `graph.get(node, [])` safely handles nodes that are missing from the dictionary.
+- `if neighbor not in visited` prevents infinite recursion on cycles like `A -> B -> A`.
+
+### What Happens If We Remove `visited`?
+
+In a graph with a cycle, DFS can run forever:
+
+`A -> B -> C -> A -> B -> C -> ...`
+
+So `visited` is not optional for general graphs.  
+In trees (which have no cycles), `visited` is often unnecessary, but keeping it is still a safe, consistent habit for beginners.
+
 ### Visualizing the Graph
 
 ```
@@ -97,6 +128,11 @@ dfs(graph, 'A')
 | 8 | C | Visit, F already visited | [A, C] |
 | — | **Done** | **Output: A B D E F C** | [] |
 
+How to read this table:
+- The **Node** column is the node currently being processed.
+- The **Call Stack** shows active recursive calls. Deeper recursion means a longer stack.
+- When a dead end is reached, the stack shrinks. That shrink is exactly what "backtracking" means.
+
 ---
 
 ## Complexity Analysis
@@ -109,6 +145,22 @@ dfs(graph, 'A')
 
 - **V** = number of vertices, **E** = number of edges
 - Space is dominated by the recursion stack (or explicit stack), which can hold at most O(V) frames in the worst case (a linear chain graph).
+
+Intuition:
+- You cannot visit more than `V` nodes, so node-work is O(V).
+- Across all nodes, you inspect each edge a constant number of times, giving O(E).
+- Add them together: **O(V + E)**.
+
+### Why DFS Space Can Be Large
+
+DFS stores:
+- The `visited` set (up to all nodes).
+- The active recursion path (or explicit stack).
+
+If the graph is shaped like a long chain, recursion depth can become very large (close to `V`).  
+That is the worst-case reason space is O(V).
+
+In Python specifically, very deep recursion may hit the recursion limit. In those cases, iterative DFS with an explicit stack is safer.
 
 ---
 
@@ -219,3 +271,76 @@ def detect_cycle(graph):
 | **Finds shortest path?** | No | Yes (unweighted) |
 | **Memory (sparse graph)** | O(V) — stack depth | O(V) — frontier width |
 | **Best for** | Topological sort, cycle detection, backtracking | Shortest path, level-order traversal |
+
+Rule of thumb for students:
+- Use **DFS** when you care about exploring structure deeply (components, cycles, ordering, backtracking).
+- Use **BFS** when you care about minimum number of edges from a start node.
+
+---
+
+## Iterative DFS (Stack Version)
+
+Recursive DFS is elegant, but iterative DFS avoids recursion-depth issues.
+
+```python
+def dfs_iterative(graph, start):
+    visited = set()
+    stack = [start]
+
+    while stack:
+        node = stack.pop()  # LIFO -> depth-first behavior
+        if node in visited:
+            continue
+
+        visited.add(node)
+        print(node, end=" ")
+
+        # Reverse to mimic recursive left-to-right traversal order
+        for neighbor in reversed(graph.get(node, [])):
+            if neighbor not in visited:
+                stack.append(neighbor)
+```
+
+### Recursive vs Iterative in Practice
+
+- **Recursive DFS**: shorter and easier to read when first learning.
+- **Iterative DFS**: more robust for very deep graphs in production code.
+- Both have the same big-O complexity.
+
+---
+
+## Disconnected Graphs
+
+Starting DFS from one node only visits nodes reachable from that start node.
+
+To traverse an entire graph with multiple disconnected components:
+
+```python
+def dfs_full(graph):
+    visited = set()
+
+    for node in graph:
+        if node not in visited:
+            dfs(graph, node, visited)  # reuse recursive DFS
+```
+
+This pattern ensures every component is explored.
+
+---
+
+## Common Beginner Mistakes
+
+1. Forgetting to mark nodes as visited before exploring neighbors.
+2. Assuming DFS always gives a shortest path.
+3. Confusing traversal order with graph structure (order depends on neighbor list order).
+4. Thinking recursion "remembers everything" automatically without a visited structure.
+5. Testing only acyclic graphs, then failing on cyclic inputs.
+
+---
+
+## Quick Recap
+
+- DFS explores one path deeply, then backtracks.
+- `visited` prevents repeated work and infinite loops.
+- Complexity is usually **O(V + E)** time and **O(V)** space.
+- Neighbor order changes traversal order, but not correctness.
