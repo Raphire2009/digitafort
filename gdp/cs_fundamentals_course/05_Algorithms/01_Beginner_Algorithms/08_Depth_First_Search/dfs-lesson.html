@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Depth-First Search — Interactive Lesson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #00ff88;
+    --accent2: #ff6b35;
+    --accent3: #7c6cf8;
+    --visited: #00ff88;
+    --current: #ff6b35;
+    --unvisited: #2a2a3e;
+    --text: #e8e8f0;
+    --muted: #666688;
+    --code-bg: #0d0d1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid noise texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    margin-bottom: 64px;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+
+  h1 {
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
+  h1 .line1 { display: block; color: var(--text); }
+  h1 .line2 { display: block; color: var(--accent); -webkit-text-stroke: 0px; }
+
+  .subtitle {
+    margin-top: 20px;
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  /* Section titles */
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+  }
+
+  h2 .accent { color: var(--accent); }
+  h2 .accent2 { color: var(--accent2); }
+  h2 .accent3 { color: var(--accent3); }
+
+  p { 
+    color: #b0b0c8; 
+    line-height: 1.75;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  p:last-child { margin-bottom: 0; }
+
+  /* Steps */
+  .steps {
+    display: grid;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+
+  .step:hover { border-color: var(--accent3); }
+
+  .step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.3);
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .step-content strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+
+  .step-content span {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ===== VISUALIZER ===== */
+  .visualizer-card {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  .visualizer-header {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 12px;
+  }
+
+  .visualizer-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .legend-dot.unvisited { background: var(--unvisited); border: 2px solid #4a4a6a; }
+  .legend-dot.current { background: var(--current); }
+  .legend-dot.visited { background: var(--visited); }
+
+  #graph-canvas {
+    display: block;
+    width: 100%;
+    height: 340px;
+    background: var(--code-bg);
+    cursor: pointer;
+  }
+
+  .controls {
+    padding: 20px 28px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    border: 1px solid;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+  }
+
+  .btn-primary {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .btn-primary:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn-secondary {
+    color: var(--muted);
+    border-color: var(--border);
+  }
+  .btn-secondary:hover {
+    border-color: var(--muted);
+    color: var(--text);
+  }
+
+  .btn-danger {
+    color: var(--accent2);
+    border-color: rgba(255,107,53,0.4);
+  }
+  .btn-danger:hover {
+    background: var(--accent2);
+    color: white;
+  }
+
+  .speed-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    width: 80px;
+    height: 2px;
+    background: var(--border);
+    outline: none;
+    border-radius: 2px;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent3);
+    cursor: pointer;
+  }
+
+  /* Status bar */
+  .status-bar {
+    padding: 12px 28px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .status-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .traversal-order {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .traversal-node {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    background: rgba(0,255,136,0.08);
+    border: 1px solid rgba(0,255,136,0.2);
+    border-radius: 2px;
+    color: var(--accent);
+    animation: popIn 0.3s ease;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .stack-display {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .stack-node {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 2px 6px;
+    background: rgba(124,108,248,0.1);
+    border: 1px solid rgba(124,108,248,0.3);
+    border-radius: 2px;
+    color: var(--accent3);
+  }
+
+  /* Code block */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px;
+    overflow-x: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #aaaac8;
+  }
+
+  .kw { color: var(--accent3); }
+  .fn { color: var(--accent2); }
+  .str { color: var(--accent); }
+  .cm { color: #44445a; font-style: italic; }
+  .num { color: #f9a; }
+
+  /* Exercises */
+  .exercise {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .exercise-header {
+    padding: 16px 20px;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .exercise-header:hover { background: rgba(124,108,248,0.05); }
+
+  .ex-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent3);
+    background: rgba(124,108,248,0.1);
+    border: 1px solid rgba(124,108,248,0.3);
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+
+  .ex-title {
+    font-size: 14px;
+    font-weight: 700;
+    flex: 1;
+  }
+
+  .ex-chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+
+  .exercise.open .ex-chevron { transform: rotate(180deg); }
+
+  .exercise-body {
+    display: none;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .exercise.open .exercise-body { display: block; }
+
+  .answer-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent2);
+    border: 1px solid rgba(255,107,53,0.3);
+    background: transparent;
+    padding: 8px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 14px;
+    transition: all 0.15s;
+  }
+  .answer-btn:hover { background: rgba(255,107,53,0.1); }
+
+  .answer {
+    display: none;
+    margin-top: 14px;
+    padding: 16px;
+    background: rgba(0,255,136,0.04);
+    border: 1px solid rgba(0,255,136,0.15);
+    border-radius: 4px;
+    font-size: 13px;
+    color: #a0a0c0;
+    line-height: 1.7;
+  }
+  .answer.show { display: block; }
+
+  /* Complexity table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(30,30,46,0.5);
+    color: #b0b0c8;
+    vertical-align: top;
+  }
+
+  td:first-child { color: var(--text); font-weight: 700; }
+  td .highlight { color: var(--accent); }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="reveal">
+    <div class="tag">Graph Algorithms · Lesson 03</div>
+    <h1>
+      <span class="line1">Depth-First</span>
+      <span class="line2">Search</span>
+    </h1>
+    <p class="subtitle">An algorithm that dives deep into a graph before backtracking — exploring every path to its end before trying another.</p>
+  </header>
+
+  <!-- What is DFS -->
+  <div class="card reveal">
+    <h2><span class="accent">01.</span> What is DFS?</h2>
+    <p>Depth-First Search traverses a graph by going as far as possible down one branch before backtracking. Think of it like exploring a maze: you follow one path until you hit a dead end, then backtrack to the last fork and try another route.</p>
+    <p>DFS can be implemented with <strong>recursion</strong> (using the call stack implicitly) or an <strong>explicit stack</strong> data structure. Both approaches have identical behavior.</p>
+  </div>
+
+  <!-- How it works -->
+  <div class="card reveal">
+    <h2><span class="accent2">02.</span> How it Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <strong>Start at Source</strong>
+          <span>Pick a starting node and mark it as visited. Add it to the call stack.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <strong>Explore Neighbors</strong>
+          <span>Look at the current node's unvisited neighbors in adjacency list order.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <strong>Recurse</strong>
+          <span>Call DFS on the first unvisited neighbor — go as deep as possible.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <strong>Backtrack</strong>
+          <span>When all neighbors are visited (or none exist), return to the previous node.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <strong>Terminate</strong>
+          <span>Repeat until all reachable nodes have been visited.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE VISUALIZER -->
+  <div class="section-label reveal">Interactive Visualizer</div>
+
+  <div class="visualizer-card reveal">
+    <div class="visualizer-header">
+      <div class="visualizer-title">▶ DFS Traversal — Live Demo</div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot unvisited"></div>Unvisited</div>
+        <div class="legend-item"><div class="legend-dot current"></div>Current</div>
+        <div class="legend-item"><div class="legend-dot visited"></div>Visited</div>
+      </div>
+    </div>
+
+    <canvas id="graph-canvas"></canvas>
+
+    <div class="status-bar">
+      <div class="status-label">Order:</div>
+      <div class="traversal-order" id="traversal-order"></div>
+      <div class="stack-display">
+        <span class="status-label">Stack:</span>
+        <div id="stack-display" style="display:flex;gap:4px;flex-wrap:wrap;"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-primary" id="btn-play">RUN DFS</button>
+      <button class="btn btn-secondary" id="btn-step">STEP</button>
+      <button class="btn btn-danger" id="btn-reset">RESET</button>
+      <div class="speed-control">
+        SPEED
+        <input type="range" id="speed" min="1" max="10" value="5">
+      </div>
+    </div>
+  </div>
+
+  <!-- Pseudocode -->
+  <div class="card reveal">
+    <h2><span class="accent3">03.</span> Pseudocode</h2>
+<pre><code><span class="kw">procedure</span> <span class="fn">DFS</span>(graph, node, visited)
+  <span class="cm">  // Mark this node so we don't revisit it</span>
+  mark node <span class="kw">as</span> visited
+  
+  <span class="kw">for each</span> neighbor <span class="kw">of</span> node:
+    <span class="kw">if</span> neighbor <span class="kw">is not</span> visited:
+      <span class="fn">DFS</span>(graph, neighbor, visited)  <span class="cm">// recurse deeper</span>
+    end if
+  end for
+  <span class="cm">  // All neighbors done → backtrack automatically</span>
+end procedure</code></pre>
+  </div>
+
+  <!-- Python Implementation -->
+  <div class="card reveal">
+    <h2><span class="accent">04.</span> Python Implementation</h2>
+<pre><code><span class="kw">def</span> <span class="fn">dfs</span>(graph, node, visited=<span class="kw">None</span>):
+    <span class="kw">if</span> visited <span class="kw">is</span> <span class="kw">None</span>:
+        visited = <span class="fn">set</span>()            <span class="cm"># initialize on first call</span>
+    
+    visited.<span class="fn">add</span>(node)             <span class="cm"># mark as visited</span>
+    <span class="fn">print</span>(node, end=<span class="str">" "</span>)
+
+    <span class="kw">for</span> neighbor <span class="kw">in</span> graph.<span class="fn">get</span>(node, []):
+        <span class="kw">if</span> neighbor <span class="kw">not in</span> visited:
+            <span class="fn">dfs</span>(graph, neighbor, visited)
+
+<span class="cm"># --- Example graph (adjacency list) ---</span>
+graph = {
+    <span class="str">'A'</span>: [<span class="str">'B'</span>, <span class="str">'C'</span>],
+    <span class="str">'B'</span>: [<span class="str">'D'</span>, <span class="str">'E'</span>],
+    <span class="str">'C'</span>: [<span class="str">'F'</span>],
+    <span class="str">'D'</span>: [],
+    <span class="str">'E'</span>: [<span class="str">'F'</span>],
+    <span class="str">'F'</span>: []
+}
+
+<span class="fn">dfs</span>(graph, <span class="str">'A'</span>)
+<span class="cm"># Output: A B D E F C</span></code></pre>
+  </div>
+
+  <!-- Complexity -->
+  <div class="card reveal">
+    <h2><span class="accent2">05.</span> Complexity Analysis</h2>
+    <table>
+      <tr>
+        <th>Case</th>
+        <th>Time</th>
+        <th>Space</th>
+        <th>Explanation</th>
+      </tr>
+      <tr>
+        <td>General</td>
+        <td><span class="highlight">O(V + E)</span></td>
+        <td><span class="highlight">O(V)</span></td>
+        <td>Visit each vertex once; traverse each edge once. Stack depth = max O(V).</td>
+      </tr>
+      <tr>
+        <td>Dense Graph</td>
+        <td><span class="highlight">O(V²)</span></td>
+        <td><span class="highlight">O(V)</span></td>
+        <td>With adjacency matrix where E ≈ V², time becomes O(V²).</td>
+      </tr>
+      <tr>
+        <td>Tree (no cycles)</td>
+        <td><span class="highlight">O(N)</span></td>
+        <td><span class="highlight">O(H)</span></td>
+        <td>N = nodes, H = tree height (stack depth equals height).</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Exercises -->
+  <div class="section-label reveal">Practice Exercises</div>
+
+  <div class="reveal">
+
+    <div class="exercise" id="ex1">
+      <div class="exercise-header" onclick="toggleEx('ex1')">
+        <span class="ex-num">Q1</span>
+        <span class="ex-title">Trace the DFS traversal for the example graph starting at 'A'. Why might the order change?</span>
+        <span class="ex-chevron">▼</span>
+      </div>
+      <div class="exercise-body">
+        <p>Walk through the graph manually or use the visualizer above. Think about: what happens at each node? When does it backtrack? How does the order of neighbors in the adjacency list affect the result?</p>
+        <button class="answer-btn" onclick="toggleAns('ans1', this)">REVEAL ANSWER</button>
+        <div class="answer" id="ans1">
+          <strong>Trace:</strong> A → visits B (first neighbor) → B visits D (first neighbor of B, dead end) → B visits E → E visits F (F is unvisited here) → backtrack to E, B, A → A visits C → C would visit F but it's already visited.<br><br>
+          <strong>Output: A B D E F C</strong><br><br>
+          <strong>Why order matters:</strong> DFS explores neighbors in the order they appear in the adjacency list. If 'C' was listed before 'B' in A's neighbors, the traversal would go A → C → F → B → D → E (F already visited). The <em>topology</em> is the same graph, but the <em>traversal order</em> depends entirely on adjacency list ordering.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise" id="ex2">
+      <div class="exercise-header" onclick="toggleEx('ex2')">
+        <span class="ex-num">Q2</span>
+        <span class="ex-title">What is the time and space complexity of DFS?</span>
+        <span class="ex-chevron">▼</span>
+      </div>
+      <div class="exercise-body">
+        <p>Consider both the number of vertices (V) and edges (E). For space, think about what's stored on the call stack in the worst case.</p>
+        <button class="answer-btn" onclick="toggleAns('ans2', this)">REVEAL ANSWER</button>
+        <div class="answer" id="ans2">
+          <strong>Time: O(V + E)</strong> — Each vertex is visited exactly once (O(V)), and for each vertex we look at all its edges (O(E) total across all vertices).<br><br>
+          <strong>Space: O(V)</strong> — The visited set is O(V). The recursion stack depth is at most O(V) in the worst case (a linear chain graph). For iterative DFS with an explicit stack, the stack can also hold up to O(V) elements.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise" id="ex3">
+      <div class="exercise-header" onclick="toggleEx('ex3')">
+        <span class="ex-num">Q3</span>
+        <span class="ex-title">Name three real-world applications of DFS.</span>
+        <span class="ex-chevron">▼</span>
+      </div>
+      <div class="exercise-body">
+        <p>Think broadly — DFS is used in compilers, games, networking, and more. Consider what problems "exploring as deep as possible" naturally solves.</p>
+        <button class="answer-btn" onclick="toggleAns('ans3', this)">REVEAL ANSWER</button>
+        <div class="answer" id="ans3">
+          <strong>1. Maze solving</strong> — DFS follows one path to completion before trying alternatives, mirroring how humans trace a maze.<br><br>
+          <strong>2. Topological sorting</strong> — Used in compilers to resolve build dependencies. DFS produces a post-order that can be reversed to get a valid topological order.<br><br>
+          <strong>3. Detecting cycles in graphs</strong> — DFS tracks nodes on the current stack; if a back-edge to a stack node is found, a cycle exists. Critical in dependency management (detecting circular imports).<br><br>
+          <strong>Bonus:</strong> Finding strongly connected components (Tarjan's/Kosaraju's algorithms), solving puzzles like Sudoku, web crawling, and parsing expressions in compilers.
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise" id="ex4">
+      <div class="exercise-header" onclick="toggleEx('ex4')">
+        <span class="ex-num">Q4</span>
+        <span class="ex-title">How would you modify DFS to detect if a graph contains a cycle?</span>
+        <span class="ex-chevron">▼</span>
+      </div>
+      <div class="exercise-body">
+        <p>This is a common interview question. Think about what additional information you'd need to track during the traversal.</p>
+        <button class="answer-btn" onclick="toggleAns('ans4', this)">REVEAL ANSWER</button>
+        <div class="answer" id="ans4">
+          Track two sets: <code>visited</code> (all ever-visited nodes) and <code>rec_stack</code> (nodes on the <em>current</em> recursion path).<br><br>
+          During DFS, add each node to <code>rec_stack</code> on entry and remove it on exit. If you encounter a neighbor that's already in <code>rec_stack</code>, you've found a <strong>back edge → cycle detected</strong>.<br><br>
+          A node in <code>visited</code> but not in <code>rec_stack</code> is safe (it was fully explored via another path). This runs in O(V + E) — no extra cost over standard DFS.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- end container -->
+
+<script>
+// ===== CANVAS GRAPH VISUALIZER =====
+const canvas = document.getElementById('graph-canvas');
+const ctx = canvas.getContext('2d');
+
+const GRAPH = {
+  'A': ['B', 'C'],
+  'B': ['D', 'E'],
+  'C': ['F'],
+  'D': [],
+  'E': ['F'],
+  'F': []
+};
+
+let W, H;
+let nodes = {};
+let edges = [];
+let nodeState = {}; // unvisited, current, visited
+let traversalOrder = [];
+let callStack = [];
+let dfsSteps = [];
+let stepIdx = 0;
+let animTimer = null;
+let isRunning = false;
+
+function initLayout() {
+  W = canvas.parentElement.clientWidth;
+  H = 340;
+  canvas.width = W;
+  canvas.height = H;
+
+  const cx = W / 2, cy = H / 2;
+  nodes = {
+    'A': { x: cx, y: 60 },
+    'B': { x: cx - 160, y: 170 },
+    'C': { x: cx + 160, y: 170 },
+    'D': { x: cx - 260, y: 290 },
+    'E': { x: cx - 60, y: 290 },
+    'F': { x: cx + 160, y: 290 },
+  };
+
+  edges = [];
+  for (const [from, neighbors] of Object.entries(GRAPH)) {
+    for (const to of neighbors) {
+      edges.push([from, to]);
+    }
+  }
+
+  resetViz();
+}
+
+function resetViz() {
+  nodeState = {};
+  for (const n of Object.keys(GRAPH)) nodeState[n] = 'unvisited';
+  traversalOrder = [];
+  callStack = [];
+  dfsSteps = [];
+  stepIdx = 0;
+  clearInterval(animTimer);
+  isRunning = false;
+  document.getElementById('traversal-order').innerHTML = '';
+  document.getElementById('stack-display').innerHTML = '';
+  draw();
+}
+
+function buildSteps(graph, start) {
+  const steps = [];
+  const visited = new Set();
+
+  function dfs(node, stack) {
+    visited.add(node);
+    const currentStack = [...stack, node];
+    steps.push({ action: 'visit', node, stack: currentStack });
+
+    for (const nb of (graph[node] || [])) {
+      if (!visited.has(nb)) {
+        steps.push({ action: 'check', from: node, to: nb, stack: currentStack });
+        dfs(nb, currentStack);
+        steps.push({ action: 'backtrack', to: node, stack: currentStack });
+      }
+    }
+  }
+
+  dfs(start, []);
+  return steps;
+}
+
+function applyStep(step) {
+  if (step.action === 'visit') {
+    // Reset all current → visited
+    for (const n of Object.keys(nodeState)) {
+      if (nodeState[n] === 'current') nodeState[n] = 'visited';
+    }
+    nodeState[step.node] = 'current';
+    traversalOrder.push(step.node);
+    callStack = step.stack;
+
+    // Update UI
+    const el = document.createElement('div');
+    el.className = 'traversal-node';
+    el.textContent = step.node;
+    document.getElementById('traversal-order').appendChild(el);
+
+  } else if (step.action === 'backtrack') {
+    callStack = step.stack;
+    for (const n of Object.keys(nodeState)) {
+      if (nodeState[n] === 'current') nodeState[n] = 'visited';
+    }
+    if (step.to && nodeState[step.to] === 'visited') {
+      nodeState[step.to] = 'current';
+    }
+  }
+
+  // Update stack display
+  const sd = document.getElementById('stack-display');
+  sd.innerHTML = callStack.map(n => `<div class="stack-node">${n}</div>`).join('');
+
+  draw();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  ctx.fillStyle = '#0d0d1a';
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw edges
+  for (const [from, to] of edges) {
+    const a = nodes[from], b = nodes[to];
+    const isActive = callStack.includes(from) && callStack.includes(to);
+
+    ctx.beginPath();
+    ctx.strokeStyle = isActive ? 'rgba(124,108,248,0.6)' : 'rgba(60,60,80,0.8)';
+    ctx.lineWidth = isActive ? 2 : 1;
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
+
+    // Arrow
+    const angle = Math.atan2(b.y - a.y, b.x - a.x);
+    const r = 22;
+    const ax = b.x - Math.cos(angle) * r;
+    const ay = b.y - Math.sin(angle) * r;
+    ctx.beginPath();
+    ctx.fillStyle = isActive ? 'rgba(124,108,248,0.6)' : 'rgba(60,60,80,0.8)';
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(ax - 8 * Math.cos(angle - 0.4), ay - 8 * Math.sin(angle - 0.4));
+    ctx.lineTo(ax - 8 * Math.cos(angle + 0.4), ay - 8 * Math.sin(angle + 0.4));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Draw nodes
+  for (const [name, pos] of Object.entries(nodes)) {
+    const state = nodeState[name] || 'unvisited';
+    const r = 22;
+
+    // Glow for current
+    if (state === 'current') {
+      const g = ctx.createRadialGradient(pos.x, pos.y, r * 0.5, pos.x, pos.y, r * 2.5);
+      g.addColorStop(0, 'rgba(255,107,53,0.25)');
+      g.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, r * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+    }
+
+    if (state === 'visited') {
+      const g = ctx.createRadialGradient(pos.x, pos.y, r * 0.3, pos.x, pos.y, r * 2);
+      g.addColorStop(0, 'rgba(0,255,136,0.15)');
+      g.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, r * 2, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+    }
+
+    // Node circle
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, r, 0, Math.PI * 2);
+    
+    if (state === 'current') {
+      ctx.fillStyle = '#ff6b35';
+      ctx.strokeStyle = '#ff6b35';
+    } else if (state === 'visited') {
+      ctx.fillStyle = 'rgba(0,255,136,0.15)';
+      ctx.strokeStyle = '#00ff88';
+    } else {
+      ctx.fillStyle = '#1a1a2e';
+      ctx.strokeStyle = '#3a3a5a';
+    }
+
+    ctx.lineWidth = 2;
+    ctx.fill();
+    ctx.stroke();
+
+    // Node label
+    ctx.font = 'bold 14px Space Mono, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = state === 'current' ? '#fff' : state === 'visited' ? '#00ff88' : '#7070a0';
+    ctx.fillText(name, pos.x, pos.y);
+  }
+}
+
+// Controls
+document.getElementById('btn-play').addEventListener('click', () => {
+  if (isRunning) return;
+  if (stepIdx === 0) dfsSteps = buildSteps(GRAPH, 'A');
+  isRunning = true;
+  const speed = () => 1200 - document.getElementById('speed').value * 100;
+  
+  function runNext() {
+    if (stepIdx < dfsSteps.length) {
+      applyStep(dfsSteps[stepIdx++]);
+      animTimer = setTimeout(runNext, speed());
+    } else {
+      isRunning = false;
+      // Set final state
+      for (const n of Object.keys(nodeState)) {
+        if (nodeState[n] === 'current') nodeState[n] = 'visited';
+      }
+      document.getElementById('stack-display').innerHTML = '';
+      draw();
+    }
+  }
+  runNext();
+});
+
+document.getElementById('btn-step').addEventListener('click', () => {
+  if (isRunning) return;
+  if (stepIdx === 0) dfsSteps = buildSteps(GRAPH, 'A');
+  if (stepIdx < dfsSteps.length) {
+    applyStep(dfsSteps[stepIdx++]);
+  }
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  clearTimeout(animTimer);
+  initLayout();
+});
+
+// Exercises
+function toggleEx(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function toggleAns(id, btn) {
+  const el = document.getElementById(id);
+  el.classList.toggle('show');
+  btn.textContent = el.classList.contains('show') ? 'HIDE ANSWER' : 'REVEAL ANSWER';
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Init
+window.addEventListener('resize', initLayout);
+initLayout();
+</script>
+</body>
+</html>

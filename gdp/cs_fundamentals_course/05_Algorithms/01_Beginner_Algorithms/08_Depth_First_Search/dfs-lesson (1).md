@@ -151,6 +151,40 @@ Intuition:
 - Across all nodes, you inspect each edge a constant number of times, giving O(E).
 - Add them together: **O(V + E)**.
 
+### Time Complexity, Step by Step
+
+When students see `O(V + E)`, a common confusion is:  
+"Why not `O(V * E)`?"
+
+It is **not** multiplication because DFS is not doing "every vertex times every edge."  
+Instead, it does two kinds of work once across the whole run:
+
+1. **Vertex work** (visit/mark each node) -> up to `V` times
+2. **Edge work** (check neighbor connections) -> up to `E` total checks (constant-factor differences by representation)
+
+So total work is an addition:
+
+`Total = vertex work + edge work = O(V) + O(E) = O(V + E)`
+
+### Mini Example
+
+Suppose:
+- `V = 6` nodes
+- `E = 6` edges
+
+Then DFS does roughly:
+- up to 6 node visits
+- plus neighbor checks across about 6 edges
+
+So the growth is around `6 + 6`, not `6 * 6`.
+
+### Directed vs Undirected (Quick Note)
+
+- **Directed graph**: each directed edge is considered once in adjacency-list scanning.
+- **Undirected graph**: each undirected edge appears in two adjacency lists, so it may be scanned twice (still linear, still O(V + E)).
+
+Big-O ignores constant factors like "once vs twice," so complexity stays the same class.
+
 ### Why DFS Space Can Be Large
 
 DFS stores:

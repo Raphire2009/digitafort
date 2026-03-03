@@ -440,7 +440,7 @@ except IOError as e:
 """
 
 
-my_new_file = open("victor.txt", "w")
+my_new_file = open("victor.txt", "a")
 
 data_inputed  = my_new_file.write(" anything is okay . \n") 
 

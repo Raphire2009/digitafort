@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <defs>
+    <style>
+      .title { font: 700 28px 'Segoe UI', Tahoma, sans-serif; fill: #10243f; }
+      .label { font: 600 18px 'Segoe UI', Tahoma, sans-serif; fill: #223a5e; }
+      .small { font: 500 16px 'Segoe UI', Tahoma, sans-serif; fill: #4f6485; }
+      .edge { stroke: #bcc9de; stroke-width: 4; }
+      .node { fill: #dce8fb; stroke: #5f7598; stroke-width: 3; }
+      .text { font: 700 22px 'Segoe UI', Tahoma, sans-serif; fill: #10243f; text-anchor: middle; dominant-baseline: middle; }
+      .order { fill: #ffb703; stroke: #b87900; stroke-width: 2; }
+      .orderText { font: 700 15px 'Segoe UI', Tahoma, sans-serif; fill: #2b1c00; text-anchor: middle; dominant-baseline: middle; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="520" fill="#f7faff"/>
+  <text x="40" y="48" class="title">DFS Search Diagram (Start: A, Target Example: E)</text>
+  <text x="40" y="80" class="small">Traversal order shown by yellow badges: A → B → D → E → F → C</text>
+
+  <line class="edge" x1="450" y1="120" x2="300" y2="210"/>
+  <line class="edge" x1="450" y1="120" x2="600" y2="210"/>
+  <line class="edge" x1="300" y1="210" x2="210" y2="340"/>
+  <line class="edge" x1="300" y1="210" x2="390" y2="340"/>
+  <line class="edge" x1="600" y1="210" x2="600" y2="340"/>
+  <line class="edge" x1="390" y1="340" x2="600" y2="340"/>
+
+  <circle class="node" cx="450" cy="120" r="36"/>
+  <text class="text" x="450" y="120">A</text>
+
+  <circle class="node" cx="300" cy="210" r="36"/>
+  <text class="text" x="300" y="210">B</text>
+
+  <circle class="node" cx="600" cy="210" r="36"/>
+  <text class="text" x="600" y="210">C</text>
+
+  <circle class="node" cx="210" cy="340" r="36"/>
+  <text class="text" x="210" y="340">D</text>
+
+  <circle class="node" cx="390" cy="340" r="36"/>
+  <text class="text" x="390" y="340">E</text>
+
+  <circle class="node" cx="600" cy="340" r="36"/>
+  <text class="text" x="600" y="340">F</text>
+
+  <circle class="order" cx="500" cy="120" r="14"/><text class="orderText" x="500" y="120">1</text>
+  <circle class="order" cx="350" cy="210" r="14"/><text class="orderText" x="350" y="210">2</text>
+  <circle class="order" cx="160" cy="340" r="14"/><text class="orderText" x="160" y="340">3</text>
+  <circle class="order" cx="440" cy="340" r="14"/><text class="orderText" x="440" y="340">4</text>
+  <circle class="order" cx="650" cy="340" r="14"/><text class="orderText" x="650" y="340">5</text>
+  <circle class="order" cx="650" cy="210" r="14"/><text class="orderText" x="650" y="210">6</text>
+
+  <text x="40" y="430" class="label">Meaning</text>
+  <text x="40" y="458" class="small">• Yellow number badges show first-visit order from DFS traversal.</text>
+  <text x="40" y="483" class="small">• If searching for E, DFS finds it at step 4 and can stop early.</text>
+</svg>

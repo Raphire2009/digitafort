@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520">
+  <defs>
+    <style>
+      .title { font: 700 28px 'Segoe UI', Tahoma, sans-serif; fill: #10243f; }
+      .small { font: 500 16px 'Segoe UI', Tahoma, sans-serif; fill: #4f6485; }
+      .edge { stroke: #c2cde0; stroke-width: 4; }
+      .node { fill: #dce8fb; stroke: #5f7598; stroke-width: 3; }
+      .text { font: 700 22px 'Segoe UI', Tahoma, sans-serif; fill: #10243f; text-anchor: middle; dominant-baseline: middle; }
+      .pulse {
+        fill: #ffb703;
+        stroke: #a66c00;
+        stroke-width: 2;
+        opacity: 0.2;
+        animation: visit 9s linear infinite;
+      }
+      .trail {
+        fill: none;
+        stroke: #ffb703;
+        stroke-width: 8;
+        stroke-linecap: round;
+        stroke-dasharray: 1 26;
+        opacity: 0.28;
+      }
+      .runner {
+        fill: #ef476f;
+        stroke: #9d1f39;
+        stroke-width: 2;
+      }
+      @keyframes visit {
+        0%, 10% { opacity: 0.15; r: 14px; }
+        12%, 18% { opacity: 0.95; r: 22px; }
+        20%, 100% { opacity: 0.15; r: 14px; }
+      }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="520" fill="#f7faff"/>
+  <text x="40" y="48" class="title">DFS Search Animated Diagram</text>
+  <text x="40" y="78" class="small">Looped traversal path: A → B → D → E → F → C (then repeat)</text>
+
+  <line class="edge" x1="450" y1="120" x2="300" y2="210"/>
+  <line class="edge" x1="450" y1="120" x2="600" y2="210"/>
+  <line class="edge" x1="300" y1="210" x2="210" y2="340"/>
+  <line class="edge" x1="300" y1="210" x2="390" y2="340"/>
+  <line class="edge" x1="600" y1="210" x2="600" y2="340"/>
+  <line class="edge" x1="390" y1="340" x2="600" y2="340"/>
+
+  <polyline class="trail" points="450,120 300,210 210,340 300,210 390,340 600,340 600,210"/>
+
+  <circle class="node" cx="450" cy="120" r="36"/><text class="text" x="450" y="120">A</text>
+  <circle class="node" cx="300" cy="210" r="36"/><text class="text" x="300" y="210">B</text>
+  <circle class="node" cx="600" cy="210" r="36"/><text class="text" x="600" y="210">C</text>
+  <circle class="node" cx="210" cy="340" r="36"/><text class="text" x="210" y="340">D</text>
+  <circle class="node" cx="390" cy="340" r="36"/><text class="text" x="390" y="340">E</text>
+  <circle class="node" cx="600" cy="340" r="36"/><text class="text" x="600" y="340">F</text>
+
+  <circle class="pulse" cx="450" cy="120" r="14" style="animation-delay:0s"/>
+  <circle class="pulse" cx="300" cy="210" r="14" style="animation-delay:1.3s"/>
+  <circle class="pulse" cx="210" cy="340" r="14" style="animation-delay:2.6s"/>
+  <circle class="pulse" cx="390" cy="340" r="14" style="animation-delay:3.9s"/>
+  <circle class="pulse" cx="600" cy="340" r="14" style="animation-delay:5.2s"/>
+  <circle class="pulse" cx="600" cy="210" r="14" style="animation-delay:6.5s"/>
+
+  <circle class="runner" r="12" cx="450" cy="120">
+    <animateMotion dur="9s" repeatCount="indefinite" rotate="auto">
+      <mpath href="#route"/>
+    </animateMotion>
+  </circle>
+
+  <path id="route" d="M450 120 L300 210 L210 340 L300 210 L390 340 L600 340 L600 210" fill="none" stroke="none"/>
+
+  <text x="40" y="470" class="small">Red dot = current DFS position. Yellow pulse = first-visit moments.</text>
+</svg>
