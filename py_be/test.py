@@ -440,17 +440,58 @@ except IOError as e:
 """
 
 
+
+
+"""
 my_new_file = open("victor.txt", "a")
 
 data_inputed  = my_new_file.write(" anything is okay . \n") 
 
-
-
-
 if data_inputed :
     print("We added a text to the file")
+
+"""
+
 
 #= open("victor.txt", 'w')
 #my_new_file.write("hhhhhfkkf . \n")
 
 
+
+
+
+
+import sqlite3
+import os 
+
+
+DB_FILE = "new_db.db"
+
+"""
+clearing of the db 
+"""
+
+if os.path.exists(DB_FILE):
+    os.remove(DB_FILE)
+    print(f"cleared the old data in {DB_FILE}")
+
+
+"""
+db connections , we stated 
+"""
+print(" THe db connections \n")
+conn = sqlite3.connect(DB_FILE)
+print("db created ")
+
+
+cur = conn.cursor()
+
+create_tb_q = """
+CREATE TABLE IF NOT EXISTS users(
+id INTEGER PRIMARY KEY,
+name  TEXT NOT NULL,
+email TEXT NOT NULL UNIQUE
+)
+"""
+cur.execute(create_tb_q)
+print("EXecuted")
